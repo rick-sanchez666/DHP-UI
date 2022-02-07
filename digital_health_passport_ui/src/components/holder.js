@@ -1,38 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { create } from 'ipfs-http-client';
 import axios from 'axios';
+import UserContext from '../UserContext';
 
 const Holder = () => {
+    const userContext = useContext(UserContext);
 
 
     const [publicKey, setPublicKey] = useState(null);
     const [hashKey, sethashKey] = useState("");
+    const [ipfsKey, setipfsKey] = useState(null);
     const [user, setUser] = useState({});
     const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
+        console.log("holder js effect")
+        if(userContext && userContext.length > 0) {
+            const user = userContext.filter(x => x.userType == 'HOLDER')[0];
+            setUser(user);
+            setPublicKey(user.publicKey)
+        }
+       
         // Update the document title using the browser API
-        axios.get(`https://dhp-server.herokuapp.com/allusers`)
-            .then(res => {
-                const user = res.data.filter(x => x.userType == 'HOLDER')[0];
-                console.log(user)
-                setUser(user);
-                setPublicKey(user.publicKey)
-                axios.get(`https://dhp-server.herokuapp.com/search/31LQ5RrKKtzxUGFQWTLq8Jg7PRHkntcmm4KdMqA3hqq9`)
-                    .then(r => {
-                        const txData = r.data;
-                        console.log(txData)
-                        setTransactions(txData);
+       
+    }, [userContext]);
 
-                    })
-            })
+    useEffect(() => {
+        axios.get(`https://dhp-server.herokuapp.com/search/${user.publicKey}`)
+        .then(r => {
+            const txData = r.data;
+            console.log(txData)
+            setTransactions(txData);
+        })
+    }, [user])
 
 
-    }, []);
-
-
-
-
+    const getAsset = (event) => {
+        event.preventDefault();
+        let id = event.target.innerText;
+        axios.get(`https://dhp-server.herokuapp.com/transaction/${id}`)
+        .then( res => {
+            if(res && res.data && res.data.data.file) {
+                const url = `https://ipfs.infura.io/ipfs/${res.data.data.file}`;
+                setipfsKey(url)
+            }
+        })
+    }
 
 
     return (<div>
@@ -52,9 +65,15 @@ const Holder = () => {
 
                 <ul className="list-group">
                     {transactions.length > 0 ? transactions.map((x) => {
-                        return <li key={x.id} className="list-group-item"><a href={x.id}>{x.id}</a></li>
+                        return <li key={x.id} className="list-group-item"><a className='link' role="button" onClick={getAsset}>{x.id}</a></li>
                     }) : "...Loading"}
                 </ul>
+               {ipfsKey && <div className=''>
+                    <h6>Health Report:</h6>
+                    <div className="row " style={{height:'500px'}}>
+                        <iframe className="col-lg-12 col-md-12 col-sm-12" src={ipfsKey}></iframe>
+                    </div>
+                 </div> }
             </div>
         </div>
     </div>)

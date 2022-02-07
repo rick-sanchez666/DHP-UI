@@ -1,25 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { create } from 'ipfs-http-client';
 import axios from 'axios';
+import UserContext from '../UserContext';
 
 const Issuer = () => {
+    const userContext = useContext(UserContext);
 
     const [file, setFile] = useState(null);
     const [publicKey, setPublicKey] = useState(null);
     const [hashKey, sethashKey] = useState("");
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState(null);
+    const [holder, setHolder] = useState(null);
+    const [successMessage, setsuccessMessage] = useState(null);
     const [reciverPublicKey, setReciverPublicKey] = useState();
 
     useEffect(() => {
+        console.log("holder js effect")
+        if(userContext && userContext.length > 0) {
+            const user = userContext.filter(x => x.userType == 'ISSUER')[0];
+            const receiver = userContext.filter(x => x.userType == 'HOLDER')[0];
+            setUser(user);
+            setHolder(receiver);
+            setPublicKey(user.publicKey)
+        }
+       
         // Update the document title using the browser API
-        axios.get(`https://dhp-server.herokuapp.com/allusers`)
-            .then(res => {
-                const user = res.data.filter(x => x.userType == 'ISSUER')[0];
-                console.log(user)
-                setUser(user);
-                setPublicKey(user.publicKey)
-            })
-    }, []);
+       
+    }, [userContext]);
 
 
     // On file select (from the pop up)
@@ -51,16 +58,17 @@ const Issuer = () => {
              
                 "fileHash": result.path, 
              
-                "metaData": publicKey, 
+                "metaData": reciverPublicKey, 
              
-                "receiverPublicKey":publicKey, 
+                "senderPublicKey":publicKey, 
              
-                "receiverUserId": "62005b5c50798ca67025659c" 
+                "receiverUserId": holder._id
              
              }
              
              axios.post('https://dhp-server.herokuapp.com/create',creatTransaction).then(x=>{
                console.log( x.data);
+                setsuccessMessage("Uploaded the file Successfully!")
              })
 
         })
@@ -80,16 +88,19 @@ const Issuer = () => {
                     </div>
                     <div className='mb-2'>
 
-                        <label class="form-label" htmlFor="healthRecord">Upload Health Record</label>
+                        <label className="form-label" htmlFor="healthRecord">Upload Health Record</label>
                         <input type="file" className="form-control" onChange={onFileChange} id="healthRecord" />
                     </div>
                     <div className=''>
-                        <label class="form-label" htmlFor="patientKey">Patient Key</label>
+                        <label className="form-label" htmlFor="patientKey">Patient Key</label>
                         <input type='text' className='form-control' value={reciverPublicKey} onInput={receiverHandler} id='patientKey' placeholder='Patient public key' />
                     </div>
                     <div className='text-end mt-2'>
                         <button type="button" disabled={file == null} className={file == null ? 'btn btn-secondary' : 'btn btn-primary'} onClick={onFileUpload} >Upload</button>
                     </div>
+                   {successMessage && <div className='col-12 alert alert-success'>
+                        {successMessage}
+                    </div> }
 
                     <div>
                         <h6>Hash Key of the file:</h6>

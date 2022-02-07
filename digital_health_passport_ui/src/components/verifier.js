@@ -23,7 +23,6 @@ const Verifier = () => {
     }, []);
 
     const onInputHandler = (event) => {
-
         sethashKey(event.target.value);
     }
 
@@ -32,10 +31,9 @@ const Verifier = () => {
         axios.get(`https://dhp-server.herokuapp.com/transaction/${hashKey}`)
             .then(res => {
                 const data = res.data;
-                console.log(data.file);
-                const url = `https://ipfs.infura.io/ipfs/${data.file}`
-                const urlTemp = 'https://ipfs.infura.io/ipfs/QmPfNPzaSu2g3GZiLY3G57oLSa5osFyfinKoP8pgYnAKut'
-                setipfsKey(urlTemp)
+                console.log(data.data.file);
+                const url = `https://ipfs.infura.io/ipfs/${data.data.file}`;
+                setipfsKey(url)
             })
     }
 
@@ -53,7 +51,7 @@ const Verifier = () => {
                     </div>
 
                     <div>
-                        <input type="search" id="form1" class="form-control" value={hashKey} onInput={onInputHandler} placeholder='hash key of document' />
+                        <input type="search" id="form1" className="form-control" value={hashKey} onInput={onInputHandler} placeholder='hash key of document' />
 
                     </div>
 
