@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { create } from 'ipfs-http-client';
 import axios from 'axios';
+import BarcodeScannerComponent from "react-webcam-barcode-scanner";
 
 
 const Verifier = () => {
@@ -10,6 +11,8 @@ const Verifier = () => {
     const [hashKey, sethashKey] = useState("");
     const [user, setUser] = useState(null);
     const [ipfsKey, setipfsKey] = useState();
+    const [data, setData] = React.useState('Not Found');
+    const [displayScanner, setDisplayScanner] = useState(false);
 
     useEffect(() => {
         // Update the document title using the browser API
@@ -37,6 +40,11 @@ const Verifier = () => {
             })
     }
 
+    const onStartScanning = (e) => {
+        e.preventDefault();
+        setDisplayScanner(true)
+    }
+
 
 
     return (<div>
@@ -50,41 +58,41 @@ const Verifier = () => {
                         <p className=" ">public key: {publicKey}</p>
                     </div>
 
-                    <div>
-                        <input type="search" id="form1" className="form-control" value={hashKey} onInput={onInputHandler} placeholder='hash key of document' />
+                    <div className='text-center '>
+                        <button className='btn btn-md btn-primary' onClick={onStartScanning}>Start Scanning</button>
 
+                        { displayScanner &&
+                                <>
+                                     <BarcodeScannerComponent
+                            width={500}
+                            height={500}
+                            onUpdate={(err, result) => {
+                                if (result) {
+                                    setData(result.text);
+                                    setDisplayScanner(false);
+                                } 
+                                else setData('Not Found')
+                            }}
+                        />
+                        <p>{data}</p>
+                                </>
+                        }
+                       
                     </div>
-
-
-                    <div className='text-end mt-2'>
-                        <button type="button" disabled={hashKey == ''} className={hashKey == null ? 'btn btn-secondary' : 'btn btn-primary'} onClick={getTransaction} >Search</button>
-                    </div>
-
-
-
-
                 </div>
 
             </div>
 
-            <div className=''>
-
-                <h6>Health Report:</h6>
-
-
-                <div className="row " style={{height:'500px'}}>
-                    <iframe className="col-lg-12 col-md-12 col-sm-12" src={ipfsKey}></iframe>
-                </div>
-
-            </div>
-
-
-
+        {
+            data!="Not Found" &&
+             <div className=''>
+             <h6>Health Report:</h6>
+             <div className="row " style={{ height: '500px' }}>
+                 <iframe className="col-lg-12 col-md-12 col-sm-12" src={data}></iframe>
+             </div>
+         </div>
+        }
         </div>
-
-
-
-
     </div>)
 }
 

@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { create } from 'ipfs-http-client';
 import axios from 'axios';
 import UserContext from '../UserContext';
+import QRCode from "react-qr-code";
+import Modal from './Modal';
 
 const Holder = () => {
     const userContext = useContext(UserContext);
@@ -12,26 +14,29 @@ const Holder = () => {
     const [ipfsKey, setipfsKey] = useState(null);
     const [user, setUser] = useState({});
     const [transactions, setTransactions] = useState([]);
-
+    const [qrcodeDisplay, setQrcodeDisplay] = useState(false);
+    const [currentViewingDoc, setCurrentViewingDoc] = useState(null)
     useEffect(() => {
         console.log("holder js effect")
-        if(userContext && userContext.length > 0) {
+        if (userContext && userContext.length > 0) {
             const user = userContext.filter(x => x.userType == 'HOLDER')[0];
             setUser(user);
             setPublicKey(user.publicKey)
         }
-       
+
         // Update the document title using the browser API
-       
+
     }, [userContext]);
 
     useEffect(() => {
+        if (!user.hasOwnProperty('publicKey'))
+            return;
         axios.get(`https://dhp-server.herokuapp.com/search/${user.publicKey}`)
-        .then(r => {
-            const txData = r.data;
-            console.log(txData)
-            setTransactions(txData);
-        })
+            .then(r => {
+                const txData = r.data;
+                console.log(txData)
+                setTransactions(txData);
+            })
     }, [user])
 
 
@@ -39,12 +44,24 @@ const Holder = () => {
         event.preventDefault();
         let id = event.target.innerText;
         axios.get(`https://dhp-server.herokuapp.com/transaction/${id}`)
-        .then( res => {
-            if(res && res.data && res.data.data.file) {
-                const url = `https://ipfs.infura.io/ipfs/${res.data.data.file}`;
-                setipfsKey(url)
-            }
-        })
+            .then(res => {
+                if (res && res.data && res.data.data.file) {
+                    const url = `https://ipfs.infura.io/ipfs/${res.data.data.file}`;
+                    setipfsKey(url);
+                    setCurrentViewingDoc(url)
+                }
+            })
+    }
+
+    const generateQRCode = (e) => {
+        e.preventDefault();
+        setQrcodeDisplay(true)
+
+    }
+
+    const onClosingQR = (e) => {
+        e.preventDefault();
+        setQrcodeDisplay(false);
     }
 
 
@@ -68,12 +85,19 @@ const Holder = () => {
                         return <li key={x.id} className="list-group-item"><a className='link' role="button" onClick={getAsset}>{x.id}</a></li>
                     }) : "...Loading"}
                 </ul>
-               {ipfsKey && <div className=''>
-                    <h6>Health Report:</h6>
-                    <div className="row " style={{height:'500px'}}>
+                {ipfsKey && <div className=''>
+                    <h6 className='mt-3 mb-3'>Health Report:
+                        <span className='share' onClick={generateQRCode}> <button className='btn btn-sm btn-primary'>Share</button> </span>
+                    </h6>
+                    {
+                        qrcodeDisplay && <Modal onModalClose={onClosingQR} title="Report/Document">
+                            <QRCode value={currentViewingDoc} />
+                        </Modal>
+                    }
+                    <div className="row " style={{ height: '500px' }}>
                         <iframe className="col-lg-12 col-md-12 col-sm-12" src={ipfsKey}></iframe>
                     </div>
-                 </div> }
+                </div>}
             </div>
         </div>
     </div>)

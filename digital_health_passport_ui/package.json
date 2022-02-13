@@ -10,7 +10,9 @@
     "ipfs-http-client": "^56.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-qr-code": "^2.0.3",
     "react-scripts": "5.0.0",
+    "react-webcam-barcode-scanner": "0.0.2-rc2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
