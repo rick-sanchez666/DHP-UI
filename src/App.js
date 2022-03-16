@@ -20,7 +20,7 @@ function App() {
 
   useEffect(() => {
     console.log("app js effect")
-    // Update the document title using the browser API
+    // Update the document title using the browser API: change
     axios.get(`https://dhp-server.herokuapp.com/allusers`)
       .then(res => {
         console.log("data received")
