@@ -34,9 +34,9 @@ function App() {
         <div>
           <div className=' d-flex align-items-center justify-content-center'>
             <ul className='d-flex  list-unstyled'>
-              <li className='p-2'><a href='/holder'>Holder</a></li>
-              <li className='p-2'><a href='/'>Issuer</a></li>
-              <li className='p-2'><a href='/verifier'>Verifier</a></li>
+              <li className='p-2'><Link to="/holder"> Holder</Link> </li>
+              <li className='p-2'><Link to="/">Issuer </Link>  </li>
+              <li className='p-2'><Link to="/verifier">Verifier </Link> </li>
             </ul>
           </div>
           <UserContext.Provider value={[...users]}>
