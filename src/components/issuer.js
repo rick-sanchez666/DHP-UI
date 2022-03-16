@@ -24,7 +24,7 @@ const Issuer = () => {
             setPublicKey(user.publicKey)
         }
        
-        // Update the document title using the browser API
+        // Update the document title using the browser API :change
        
     }, [userContext]);
 
