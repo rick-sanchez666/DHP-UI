@@ -14,6 +14,7 @@ const Issuer = () => {
     const [holder, setHolder] = useState(null);
     const [successMessage, setsuccessMessage] = useState(null);
     const [reciverPublicKey, setReciverPublicKey] = useState();
+    const [loader, setLoader] = useState(false);
 
     useEffect(() => {
         console.log("holder js effect")
@@ -41,7 +42,7 @@ const Issuer = () => {
         setReciverPublicKey(event.target.value);
     }
     const onFileUpload = async () => {
-
+        setLoader(true);
         // here the address to upload a file 
         const client = await create('https://ipfs.infura.io:5001/api/v0');
 
@@ -69,7 +70,11 @@ const Issuer = () => {
              
              axios.post('https://dhp-server.herokuapp.com/create',creatTransaction).then(x=>{
                console.log( x.data);
-                setsuccessMessage("Uploaded the file Successfully!")
+               setLoader(false)
+                setsuccessMessage("Uploaded the file Successfully!");
+             }).catch( err => {
+               setLoader(false)
+
              })
 
         })
@@ -93,8 +98,8 @@ const Issuer = () => {
                         <input type="file" className="form-control" onChange={onFileChange} id="healthRecord" />
                     </div>
                     <div className=''>
-                        <label className="form-label" htmlFor="patientKey">Patient Key</label>
-                        <input type='text' className='form-control' value={reciverPublicKey} onInput={receiverHandler} id='patientKey' placeholder='Patient public key' />
+                        <label className="form-label" htmlFor="patientKey">Patient DHP ID</label>
+                        <input type='text' className='form-control' value={reciverPublicKey} onInput={receiverHandler} id='patientKey' placeholder='Patient DHP ID' />
                     </div>
                     <div className='text-end mt-2'>
                         <button type="button" disabled={file == null} className={file == null ? 'btn btn-secondary' : 'btn btn-primary'} onClick={onFileUpload} >Upload</button>
@@ -103,11 +108,15 @@ const Issuer = () => {
                         {successMessage}
                     </div> }
 
-                    <div>
+                    {/* <div>
                         <h6>Hash Key of the file:</h6>
                         <a href={hashKey}>{hashKey}</a>
 
-                    </div>
+                    </div> */}
+                  { loader && <div className='spinner'>
+
+<div class="loader"></div>
+</div>}  
 
                 </div>
 
