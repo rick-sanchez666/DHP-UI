@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { create } from 'ipfs-http-client';
 import axios from 'axios';
 import UserContext from '../UserContext';
+import Dhpid from './Id';
 
 const Issuer = () => {
     const userContext = useContext(UserContext);
@@ -83,8 +84,8 @@ const Issuer = () => {
             <div className='col-md-6 offset-md-3'>
                 <div className='row'>
                     <div className='m-4'>
-                        <h1 className=' text-center text-success'>NWMSU Wellness Services</h1>
-                        <p className=" ">public key: {publicKey}</p>
+                        <h1 className=' text-center text-success'>Issuer</h1>
+                        <p className="text-center"><Dhpid publicKey={publicKey}  /></p>
                     </div>
                     <div className='mb-2'>
 

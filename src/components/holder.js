@@ -4,6 +4,10 @@ import axios from 'axios';
 import UserContext from '../UserContext';
 import QRCode from "react-qr-code";
 import Modal from './Modal';
+import FoldeIcon from './Folder';
+import CopyIcon from './Copy'
+import Dhpid from './Id';
+import RecordTitle from './HealthRecordTitle';
 
 const Holder = () => {
     const userContext = useContext(UserContext);
@@ -73,20 +77,20 @@ const Holder = () => {
                 <div className='row'>
                     <div className='m-4'>
                         <h1 className=' text-center text-success'>Holder</h1>
-                        <p className=" ">public key: {publicKey}</p>
+                        <p className="dhpid "> <Dhpid publicKey={publicKey}  /></p>
                     </div>
                     <div className=''>
-                        <label className="form-label">Health Records</label>
+                        <RecordTitle title="Health Records" />
                     </div>
                 </div>
 
                 <ul className="list-group">
                     {transactions.length > 0 ? transactions.map((x) => {
                         return <li key={x.id} className="list-group-item"><a className='link' role="button" onClick={getAsset}>{x.id}</a></li>
-                    }) : "...Loading"}
+                    }) : <div className='alert alert-warning'>No Records found</div>}
                 </ul>
                 {ipfsKey && <div className=''>
-                    <h6 className='mt-3 mb-3'>Health Report:
+                    <h6 className='mt-3 mb-3'> Health Reports:
                         <span className='share' onClick={generateQRCode}> <button className='btn btn-sm btn-primary'>Share</button> </span>
                     </h6>
                     {
