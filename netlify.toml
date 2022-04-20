@@ -1,0 +1,9 @@
+[[redirects]]
+  from = "/holder"
+  to = "/holder"
+  status = 200
+
+[[redirects]]
+  from = "/verifier"
+  to = "/verifier"
+  status = 200

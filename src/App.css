@@ -1,0 +1,113 @@
+@import '~antd/dist/antd.css';
+
+.App {
+}
+
+/* header */
+.header {
+    height: 64px;
+    padding: 0 50px;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 64px;
+    max-width: 100%;
+    background: #fff;
+    box-shadow: 0 2px 8px #f0f1f2;
+    display: flex;
+    justify-content: space-between;
+}
+.navbar {
+    display: flex;
+    list-style: none;
+    flex-direction: row-reverse;
+}
+
+.logo {
+   background-image: url(./logo.png);
+    width: 60px;
+    height: 60px;
+    float: left;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    align-self: center;
+    cursor: pointer;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* login component  */
+.login-form {
+    max-width: 350px;
+    margin: 0 auto;
+}
+.login-form .ant-form-item {
+    margin: 0;
+}
+.login-form .ant-form-item-label {
+    padding: 0;
+}
+.login-page-header {
+    padding-bottom: 0;
+}
+.login-form-btn {
+    text-align: center;
+    padding: 0.5rem 0;
+    margin: 0.5rem 0;
+}
+.login-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+
+/* home page  */
+.home-page-header * {
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 300;
+}
+.search-bar {
+    max-width: 80%;
+    margin: 0 auto;
+}
+.search-bar .ant-input-affix-wrapper {
+    padding: 1rem;
+    border-radius: 2px;
+
+}
+.search-bar input {
+    font-size: 1rem;
+}
+.search-bar .btn {
+    margin: 1rem auto;
+    text-align: center;
+}
+
+/* registration form issuer */
+.issuer-reg-header, .login-page-header, .site-page-header{
+    display: flex;
+    justify-content: center;
+}
+
+
+.result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dotted #ccc;
+}
+
+.scan {
+    display: flex;
+    flex-direction: column;
+}
+.scan-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
