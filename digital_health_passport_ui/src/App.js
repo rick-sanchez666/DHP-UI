@@ -8,8 +8,10 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import Holder from './components/holder';
-import Verifier from './components/verifier';
+import Holder from './components/IssuerHome';
+import Verifier from './components/Header';
+import Verifier from './components/UploadSucces';
+import Verifier from './components/AddReport';
 import UserContext from './UserContext';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
