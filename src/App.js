@@ -1,55 +1,46 @@
-
 import './App.css';
-import Issuer from './components/issuer';
-import {
-  BrowserRouter as Router,
-  Fragment,
-  Routes,
-  Route,
-  Link
-} from "react-router-dom";
-import Holder from './components/holder';
-import Verifier from './components/verifier';
-import UserContext from './UserContext';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { Route, BrowserRouter as Router, Routes, useNavigate, Redirect, Navigate  } from 'react-router-dom';
+import NavBar from './components/Header';
+import IssuerSignupForm from './components/Registration';
+import LoginForm from './components/Login';
+import IssuerHome from './components/IssuerHome';
+import AddReportForm from './components/AddReport';
+import SuccessBanner from './components/UploadSucces';
+import VerifyDoc from './components/VerifyDoc';
+import AuthContext from './services/auth-context';
+import React,{ useContext, useEffect, useState } from 'react';
+import ProtectedRoute from './components/ProtectedRoute';
+import { Button, Result } from 'antd';
 
 
 function App() {
-
-  const [users, setUsers]  = useState([]);
-
-  useEffect(() => {
-    console.log("app js effect")
-    // Update the document title using the browser API: change
-    axios.get(`https://dhp-server.herokuapp.com/allusers`)
-      .then(res => {
-        console.log("data received")
-        setUsers(res.data);
-      })
-  }, []);
-
+const authContext = useContext(AuthContext);
+const userRole = authContext.user && authContext.user['role']
   return (
-    <div className='m-2'>
-      <Router>
-        <div>
-          <div className=' d-flex align-items-center justify-content-center'>
-            <ul className='d-flex  list-unstyled'>
-              <li className='p-2'><Link to="/holder"> Holder</Link> </li>
-              <li className='p-2'><Link to="/">Issuer </Link>  </li>
-              <li className='p-2'><Link to="/verifier">Verifier </Link> </li>
-            </ul>
-          </div>
-          <UserContext.Provider value={[...users]}>
+      <div className="App">
+          <NavBar /> 
+          <main>
             <Routes>
-              <Route exact path='/' element={<Issuer />} />
-              <Route exact path='/verifier' element={<Verifier />} />
-              <Route exact path='/holder' element={<Holder />} />
+                <Route exact path='/signup' element={<IssuerSignupForm />} />
+                <Route exact path='/login' element={<LoginForm />} />
+                {
+                  userRole === "ISSUER" ?
+                  <Route path="/" element={<ProtectedRoute role="ISSUER" element={<IssuerHome />} redirectPath="/login"/>}/>
+                  :
+                  <Route path="/" element={<ProtectedRoute role="VERIFIER" element={<VerifyDoc />} redirectPath="/login"/>}/>          
+                }
+                <Route path="/addreport" element={<ProtectedRoute role="ISSUER" element={<AddReportForm />} redirectPath="/login"/>}/>
+                <Route path="/success" element={<ProtectedRoute role="ISSUER" element={<SuccessBanner />} redirectPath="/login"/>}/>
+                <Route path="*" element={ <Result
+                          status="404"
+                          title="404"
+                          subTitle="Sorry, the page you visited does not exist."
+                          extra={<Button type="primary">Back Home</Button>}
+                />} /> 
             </Routes>
-          </UserContext.Provider>
-        </div>
-      </Router>
-    </div>
+          </main>
+        <footer></footer>
+      </div>
   );
 }
 
