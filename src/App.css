@@ -88,7 +88,7 @@ main {
 }
 
 /* registration form issuer */
-.issuer-reg-header, .login-page-header, .site-page-header{
+.issuer-reg-header, .login-page-header, .site-page-header, .forgotpassword-page-header {
     display: flex;
     justify-content: center;
 }

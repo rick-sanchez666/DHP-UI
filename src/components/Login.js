@@ -114,7 +114,7 @@ const LoginForm = (props) => {
             </Spin>
             <div className='login-links'>
                 <Link to="/signup"><Button type="link">Signup</Button></Link>
-                <Button type="link">Forgot Password</Button>
+                <Link to="/ForgotPassword"><Button type="link">Forgot Password</Button></Link>
             </div>
         </div>
 

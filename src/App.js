@@ -11,6 +11,7 @@ import AuthContext from './services/auth-context';
 import React,{ useContext, useEffect, useState } from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Button, Result } from 'antd';
+import ForgotPasswordForm from './components/ForgotPassword';
 
 
 function App() {
@@ -23,6 +24,7 @@ const userRole = authContext.user && authContext.user['role']
             <Routes>
                 <Route exact path='/signup' element={<IssuerSignupForm />} />
                 <Route exact path='/login' element={<LoginForm />} />
+                <Route exact path='/ForgotPassword' element={<ForgotPasswordForm />} />
                 {
                   userRole === "ISSUER" ?
                   <Route path="/" element={<ProtectedRoute role="ISSUER" element={<IssuerHome />} redirectPath="/login"/>}/>
@@ -31,6 +33,7 @@ const userRole = authContext.user && authContext.user['role']
                 }
                 <Route path="/addreport" element={<ProtectedRoute role="ISSUER" element={<AddReportForm />} redirectPath="/login"/>}/>
                 <Route path="/success" element={<ProtectedRoute role="ISSUER" element={<SuccessBanner />} redirectPath="/login"/>}/>
+                
                 <Route path="*" element={ <Result
                           status="404"
                           title="404"
