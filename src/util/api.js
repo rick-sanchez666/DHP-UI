@@ -47,7 +47,7 @@ export function newPatientReq(payload) {
 }
 
 export function getAFile(id) {
-  const url = `${base_url}/verifier/transaction/${id}`;
+  const url = `${base_url}/verifier/mtransaction/${id}`;
   return get(url)
 }
 

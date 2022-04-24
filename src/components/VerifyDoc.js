@@ -4,7 +4,7 @@ import BarcodeScannerComponent from "react-webcam-barcode-scanner";
 import { getAFile } from "../util/api";
 
 const VerifyDoc = props => {
-    const [data, setData] = useState('799cc9897a29756cf83a156fb055785dd790f79180c62154faa337a050fd5bd7');
+    const [data, setData] = useState(null);
     const [displayScanner, setDisplayScanner] = useState(false);
     const [file, setFile] = useState(null);
     useEffect(() => {
@@ -12,15 +12,8 @@ const VerifyDoc = props => {
        getAFile(data)
        .then( res => {
            console.log(res.data);
-           setFile(res.data);
+           setFile(res.data.url);
            setDisplayScanner(false);
-           const filew = new Blob(
-            [res.data], 
-            {type: 'application/pdf'});
-        //Build a URL from the file
-        const fileURL = URL.createObjectURL(filew);
-        //Open the URL on new Window
-        window.open(fileURL);
        })
     }, [data]);
 
@@ -28,6 +21,12 @@ const VerifyDoc = props => {
     const onStartScanning = (e) => {
         e.preventDefault();
         setDisplayScanner(true)
+    }
+
+
+    const onStopScanning = (e) => {
+        e.preventDefault();
+        setDisplayScanner(false)
     }
 
     return (
@@ -53,7 +52,9 @@ const VerifyDoc = props => {
                          /> 
                         }
                            
-                            <span> <Button type="primary" onClick={onStartScanning}>Scan QR</Button></span>
+                            <span> <Button type="primary" onClick={onStartScanning}>Scan QR</Button>
+                            <Button type="danger" disabled={!displayScanner} onClick={onStopScanning} >Stop Scan</Button>
+                            </span>
                         </div> 
                         <div>
                             <span> <Button disabled type="primary">Approve</Button></span>
@@ -67,7 +68,7 @@ const VerifyDoc = props => {
                     <h2 style={{ 'textAlign': 'center', marginTop: '1rem' }}>Health Report:</h2>
                     <div className="result" style={{ height: '500px' }}>
                         { !file && <Empty description="Scan to view the document" /> }
-                        {file &&  <iframe className="col-lg-12 col-md-12 col-sm-12" src={file}></iframe> }
+                        {file &&  <iframe style={{"width": "100%", "height": "100%"}} src={file}></iframe> }
                     </div>
                 </Col>
             </Row>

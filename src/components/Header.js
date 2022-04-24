@@ -17,7 +17,7 @@ const NavBar = props => {
     return (
         <div className="header">
            <Link to="/"> <div className="logo" /> </Link>
-           {authContext.isLoggedIn && <a className="nav-item">{authContext.user && authContext.user['dhp_id']}</a>}
+           {authContext.isLoggedIn && <a className="nav-item">{authContext.user && authContext.user['organization_name']}</a>}
             <ul className="navbar">
               {authContext.isLoggedIn &&  <li className="nav-item"><Button type="danger" onClick={onLogout} size="middle">logout </Button> </li> }
             </ul>
