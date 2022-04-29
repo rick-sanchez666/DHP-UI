@@ -46,51 +46,18 @@ const ForgotPasswordForm = (props) => {
         message.error('Failed to change the password, please try again!');
       };
 
-    // const onFinish = (value) => {
-       
-    //     const payload = { email: value.email,
-    //         password: value.password,
-    //         confirmPassword: value.confirmPassword };
-    //     setLoading(true);
-    //     signup(payload)
-    //     .then(
-    //         res => {
-    //             success()
-    //             setTimeout( () => {
-    //                 setLoading(false)
-    //                 navigate('/login');
-    //             },1000)
-    //         }
-    //     )
-    //     .catch( err => {
-    //         console.log(err);
-    //         setLoading(false);
-    //         form.resetFields();
-    //         error();
-    //     })
-    // };
+    const onSubmit = () => {
+        let email = form.getFieldsValue().email;
+        alert(email);
+        if(email) {
+            //password hidden is false
+            
 
-
-    const onSubmit = (e) => {
-        e.preventDefault();
-        if(!email) {
-            return;
         }
-        setLoading(true);
-        forgotPassword(email)
-        .then( res => {
-            let response = res.data;
-            
-            
-        })
-        .catch( error => {
-
-        })
-        .finally( () => {
-            setLoading(false);
-        })
     }
 
+
+    
     return (
         <>
             <PageHeader
