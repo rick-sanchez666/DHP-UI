@@ -42,10 +42,10 @@ const ForgotPasswordForm = (props) => {
     };
 
     const success = () => {
-        message.success('Registration is successfull!!');
+        message.success('Password change is successfull!!');
     };
     const error = () => {
-        message.error('Failed to register, please try again!');
+        message.error('Failed to change the password, please try again!');
       };
 
     const onFinish = (value) => {
@@ -78,6 +78,13 @@ const ForgotPasswordForm = (props) => {
         })
     };
 
+    const pp = () => {
+        //unhide the password
+        const input = document.getElementById('password');
+        input.hidden = false;
+    };
+        
+
 
     return (
         <>
@@ -95,29 +102,7 @@ const ForgotPasswordForm = (props) => {
                 initialValues={{
                     layout: "horizontal",
                 }} >
-                <Form.Item name="role" label="Domain"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please Choose Domain',
-                    }
-                ]}>
-                    <Radio.Group >
-                        <Radio value="ISSUER">Healthcare</Radio>
-                        <Radio value="VERIFIER">Airport Authority</Radio>
-                    </Radio.Group>
-                </Form.Item>
-
-                <Form.Item name="organization_name" label="Organization Name"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please enter name of the organisation',
-                        }
-                    ]}>
-                    <Input placeholder="" />
-                </Form.Item>
-                <Form.Item name="email" label="Organization Email"
+                <Form.Item name="email" label="Organization Email" onChange={pp}
                     rules={[
                         {
                             type: 'email',
@@ -130,48 +115,32 @@ const ForgotPasswordForm = (props) => {
                     ]}>
                     <Input placeholder="" />
                 </Form.Item>
-                <Form.Item name="address" label="Organization Address"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please enter address',
-                        }
-                    ]}>
-                    <TextArea rows={4} placeholder="" maxLength={6} />
-                </Form.Item>
-                <Form.Item name="verification_id" label="Business ID"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please enter verification ID',
-                        }
-                    ]}>
-                    <Input placeholder="Business Verification id" />
-                </Form.Item>
-                <Form.Item name="verification_issued_date" label="ID Issued Date"
-                rules={[
-                    { required: true,
-                        message: 'Please select issued date',}
-                ]}>
-                    <DatePicker />
-                </Form.Item>
-                <Form.Item name="phone_number" label="Contact Number"
-                rules={[
-                    { required: true,
-                        message: 'Please enter contact number',
-                        pattern: new RegExp(/^[0-9]+$/)}
-                ]}>
-                    <Input placeholder="" />
-                </Form.Item>
                 <Form.Item
                         label="Password"
                         name="password"
+                        id='password'
+                        hidden = {true}
                         rules={[
                             {
                                 required: true,
                                 message: 'Please input your password!',
                             },
                         ]}
+                    >
+                        <Input.Password/>
+                </Form.Item>
+                <Form.Item
+                        label="Confirm Password"
+                        name="confirm password"
+                        id='confirm password'
+                        hidden = {true}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please Confirm your password!',
+                            },
+                        ]}
+
                     >
                         <Input.Password/>
                 </Form.Item>
@@ -191,7 +160,7 @@ const ForgotPasswordForm = (props) => {
                 <Form.Item {...buttonItemLayout}>
                     <Space >
                         <Link to="/login"><Button type='default'>Back</Button></Link>
-                        <Button htmlType="submit" type="primary">Signup</Button>
+                        <Button htmlType="submit" type="primary">Submit</Button>
                     </Space>
                 </Form.Item>
             </Form>
