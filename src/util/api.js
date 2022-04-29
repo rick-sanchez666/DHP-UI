@@ -31,6 +31,12 @@ export function signin( e, p) {
   return post(url, payload);
 }
 
+export function forgotPassword( e) {
+  const payload  ={email:  e};
+  const url = `${base_url}/auth/forgotPassword`;
+  return post(url, payload);
+}
+
 export function signup(payload) {
   const url = `${base_url}/auth/signup`;
   return post(url, payload)
