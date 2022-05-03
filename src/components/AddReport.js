@@ -115,7 +115,7 @@ const AddReportForm = props => {
                         <Select.Option value="test">test</Select.Option>
                     </Select>
                 </Form.Item>
-                <Form.Item label="Service Name" name="serviceName"
+                <Form.Item label="Service Name" name="report"
                 rules={[
                     {
                         required: true,
