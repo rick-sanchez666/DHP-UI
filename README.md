@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).Deployed at [Netlify](https://digitalhealthpassport.netlify.app/)
+Deployed at [Netlify](https://digitalhealthpassport.netlify.app/)
 
 ## Available Scripts
 
